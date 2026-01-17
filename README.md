@@ -1,24 +1,22 @@
 # 学習スタイル診断アプリ
 
+## アプリ概要
+
+ユーザーの学習傾向を8つの質問から分析し、4つの基本タイプ＋Mix型＋特殊型の全10パターンから最適な学習スタイルを提案するアプリ。
+
+
+<img width="300px" src="demo.gif">
+
 ## 技術スタック
 
 - React
 - Next.js (ReactのフレームワークであるNext.jsを使う)
+- 使用したAIツール・武器
+  - Gemini: ロジック構築、デバッグ、コードの書き出し（思考パートナー）
+  - Manus / Google Stitch: UI/UXデザインのビジュアル化
+  - GitHub Copilot: コーディング中の補完、テスト作成のサポート
 
 ## 要件定義
-
-使用AIツール：Gemini
-
-### 結果
-
-理論重視型 / 実践重視型 / コツコツ型 / 短期集中型
-
-| タイプ     | キーワード | 説明                                                     |
-| ---------- | ---------- | -------------------------------------------------------- |
-| 理論重視型 | 理解力     | まずは説明書や理論を読んでから始めたい                   |
-| 実践重視型 | 行動力     | やりながら覚えるのが一番効率がいいと思う                 |
-| コツコツ型 | 継続力     | 毎日決まった時間に少しずつ進めるのが好き                 |
-| 短期集中型 | 没頭力     | 一度スイッチが入ると、短時間で一気に深い集中状態になれる |
 
 ### 診断：質問リスト
 
@@ -32,6 +30,19 @@
 | Q6  | 何かを作りながら学ぶ方が記憶に残る？           | 実践重視型（行動力） |
 | Q7  | 大きな目標を一歩ずつ着実に進めるのが好き？     | コツコツ型（継続力） |
 | Q8  | 短時間で一気に深い集中状態になりたい？         | 短期集中型（没頭力） |
+
+### 結果
+
+理論重視型 / 実践重視型 / コツコツ型 / 短期集中型
+
+| タイプ             | キーワード   | 説明                                                       |
+| ------------------ | ------------ | ---------------------------------------------------------- |
+| 理論重視型         | 理解力       | まずは説明書や理論を読んでから始めたい                     |
+| 実践重視型         | 行動力       | やりながら覚えるのが一番効率がいいと思う                   |
+| コツコツ型         | 継続力       | 毎日決まった時間に少しずつ進めるのが好き                   |
+| 短期集中型         | 没頭力       | 一度スイッチが入ると、短時間で一気に深い集中状態になれる   |
+| 万能ハイブリット型 | 全能         | あらゆる方法を使いこなせる最強の学習者。自由自在な使い分け |
+| これから発見型     | 未知の可能性 | ぴったりのスタイルを探索中。宝探しのように試す時期         |
 
 ### 回答文
 
@@ -57,20 +68,14 @@
 
 ### ロジック
 
-- 各タイプのスコアを出す
-- 最大値を探す
-- 同点のチェックをする
-  - 「1位が単独」なら、そのままそのタイプを表示。
-  - 「1位が同点（2つ）」なら、Mixタイプを表示。
-- 一番強かった個性があなたのタイプとなる
-
-優先順位：理論 ＞ 実践 ＞ コツコツ ＞ 短期集中の順番で優先する
+- 基本判定: 各タイプの回答（はい）を集計し、最大スコアのタイプを算出。
+- Mix判定: 同率1位が2つある場合、特定の組み合わせ（理論×実践など）を表示。
+- 優先順位: 同率時の優先度は「理論 ＞ 実践 ＞ コツコツ ＞ 短期集中」。
+- 特殊判定:
+  - 万能ハイブリット型: すべて「はい」の場合。
+  - これから発見型: すべて「いいえ」の場合。
 
 ## デザイン
-
-使用AIツール：Manus
-
-使用AIツール：Google Stitch
 
 ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4052007/1789c884-d30c-4213-aaf4-5a4cb82ed7d0.png)
 
@@ -80,57 +85,10 @@
 
 <img width="170px" src="image-1.png">
 
-## コーディング
+## コーディング・テスト・ CI/CD（自動チェック）
 
-使用AIツール：Gemini
+1. Lintによる静的解析 (ESLint)
+2. GitHub Actions による CI (自動チェック)
 
-## テスト
 
-## CI/CD（自動チェック）
 
-## 評価観点（重要）
-
-- [ ] 要件定義が筋が通っているか
-- [ ] 設計が破綻していないか
-- [ ] AIを「考える補助」として使えているか
-- [ ] 自分の言葉で説明できるか
-- [ ] 診断結果に納得感があるか
-
-## Next.js初期設定
-
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-### Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-### Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-### Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

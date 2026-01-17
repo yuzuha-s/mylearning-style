@@ -1,0 +1,10 @@
+node_modules
+.next
+coverage
+jest.config.js
+jest.setup.js
+dist
+build
+*.log
+.env
+.env.local
